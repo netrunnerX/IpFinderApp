@@ -8,6 +8,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 import java.io.BufferedReader
+import java.io.FileNotFoundException
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -53,6 +54,9 @@ class MainActivity : AppCompatActivity() {
                 urlConnection.connectTimeout = 6999
 
                 stringResponse = fromStreamToString(urlConnection.inputStream)
+            }
+            catch (e : FileNotFoundException) {
+                stringResponse = "URL Error: Check that the IP and the api key are valid"
             }
             catch (e : Exception) {
                 stringResponse = "Error: ${e.message}"
