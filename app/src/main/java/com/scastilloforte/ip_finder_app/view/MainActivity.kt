@@ -7,10 +7,9 @@ import android.widget.Toast
 import com.scastilloforte.ip_finder_app.R
 import com.scastilloforte.ip_finder_app.data.IpDetails
 import com.scastilloforte.ip_finder_app.presenter.Presenter
-import com.scastilloforte.ip_finder_app.presenter.PresenterImpl
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), View {
+class MainActivity : AppCompatActivity(), Presenter.View {
 
     var presenter: Presenter? = null
 
@@ -18,7 +17,7 @@ class MainActivity : AppCompatActivity(), View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter = PresenterImpl(this)
+        presenter = Presenter(this)
 
         btFindIp.setOnClickListener { findIp() }
     }
