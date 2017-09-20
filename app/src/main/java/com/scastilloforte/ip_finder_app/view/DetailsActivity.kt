@@ -1,7 +1,9 @@
-package com.scastilloforte.ip_finder_app
+package com.scastilloforte.ip_finder_app.view
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.scastilloforte.ip_finder_app.R
+import com.scastilloforte.ip_finder_app.data.IpDetails
 import kotlinx.android.synthetic.main.activity_details.*
 
 class DetailsActivity : AppCompatActivity() {

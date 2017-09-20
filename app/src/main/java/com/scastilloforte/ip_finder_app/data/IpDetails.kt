@@ -1,4 +1,4 @@
-package com.scastilloforte.ip_finder_app
+package com.scastilloforte.ip_finder_app.data
 
 import java.io.Serializable
 
