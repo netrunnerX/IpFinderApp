@@ -1,6 +1,5 @@
 package com.scastilloforte.ip_finder_app.interactor
 
-import android.os.AsyncTask
 import com.scastilloforte.ip_finder_app.data.IpDetails
 import com.scastilloforte.ip_finder_app.presenter.Presenter
 import org.json.JSONObject
@@ -24,21 +23,20 @@ class Interactor(var presenter: Presenter) {
 
             val url = "https://ipfind.co?ip=$ip&auth=$API_KEY"
 
-            MyAsyncTask().execute(url)
+            MyQueryThread(url).start()
         }
         else {
             presenter.showError("Need a valid IPv4 address")
         }
     }
 
-    inner class MyAsyncTask: AsyncTask<String, String, String>() {
-
-        override fun doInBackground(vararg params: String?): String {
+    inner class MyQueryThread(val url:String): Thread() {
+        override fun run() {
             var stringResponse : String
             try {
-                var url = URL(params[0])
+                var urlObject = URL(url)
 
-                val urlConnection = url.openConnection() as HttpURLConnection
+                val urlConnection = urlObject.openConnection() as HttpURLConnection
 
                 urlConnection.connectTimeout = 6999
 
@@ -51,15 +49,11 @@ class Interactor(var presenter: Presenter) {
                 stringResponse = "Error: ${e.message}"
             }
 
-            return stringResponse
-        }
-
-        override fun onPostExecute(result: String?) {
-            if (result!!.contains("Error")) {
-                presenter.showError(result)
+            if (stringResponse!!.contains("Error")) {
+                presenter.showError(stringResponse)
             }
             else {
-                var json = JSONObject(result)
+                var json = JSONObject(stringResponse)
                 val ip = json.getString("ip_address")
                 val country = json.getString("country")
                 val city = json.getString("city")
@@ -74,7 +68,6 @@ class Interactor(var presenter: Presenter) {
 
                 presenter.showResult(ipDetails)
             }
-
         }
     }
 
