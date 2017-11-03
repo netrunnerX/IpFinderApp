@@ -5,13 +5,14 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.scastilloforte.ip_finder_app.R
-import com.scastilloforte.ip_finder_app.data.IpDetails
+import com.scastilloforte.ip_finder_app.data.model.IpInfo
 import com.scastilloforte.ip_finder_app.presenter.Presenter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), Presenter.View {
 
     var presenter: Presenter? = null
+    val API_KEY = "YOUR_API_KEY_HERE"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +24,10 @@ class MainActivity : AppCompatActivity(), Presenter.View {
     }
 
     fun findIp() {
-        presenter!!.queryIp(etIp.text.toString())
+        presenter!!.queryIp(etIp.text.toString(), API_KEY)
     }
 
-    override fun showResult(result: IpDetails) {
+    override fun showResult(result: IpInfo) {
         val bundle = Bundle()
         bundle.putSerializable("ipDetails", result)
 
