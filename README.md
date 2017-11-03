@@ -1,7 +1,8 @@
 # IpFinderApp
+This project is an example of MVP design pattern in Android apps.
+
 Find information details about an IP. Written in Kotlin for Android.
 
-This project is an example of MVP design pattern in Android apps.
 Libraries used:
  -Retrofit 2
  -RxJava 2 
