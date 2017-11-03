@@ -11,5 +11,5 @@ import retrofit2.http.Query
 interface FindIpService {
 
     @GET(".")
-    fun queryIp(@Query("ip") ip:String, @Query("auth") apiKey:String): Call<IpInfo>
+    fun queryIp(@Query("ip") ip:String): Call<IpInfo>
 }

@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), Presenter.View {
 
     var presenter: Presenter? = null
-    val API_KEY = "YOUR_API_KEY_HERE"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity(), Presenter.View {
     }
 
     fun findIp() {
-        presenter!!.queryIp(etIp.text.toString(), API_KEY)
+        presenter!!.queryIp(etIp.text.toString())
     }
 
     override fun showResult(result: IpInfo) {

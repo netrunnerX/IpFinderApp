@@ -11,8 +11,8 @@ class Presenter(var view:View?) {
 
     var interactor:Interactor = Interactor(this, ApiModule.findIpService)
 
-    fun queryIp(ip: String, apiKey:String) {
-        interactor.queryIp(ip, apiKey)
+    fun queryIp(ip: String) {
+        interactor.queryIp(ip)
     }
 
     fun showResult(result: IpInfo) {

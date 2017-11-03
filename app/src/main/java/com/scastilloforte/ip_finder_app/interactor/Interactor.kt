@@ -12,11 +12,11 @@ import retrofit2.Response
  */
 class Interactor(var presenter: Presenter, var findIpService: FindIpService) {
 
-    fun queryIp(ip: String, apiKey:String) {
+    fun queryIp(ip: String) {
         if (ip.matches(Regex("((\\d|[1-9]\\d|1\\d{2,2}|2([0-4]\\d|5[0-5]))\\.){3}"
                 + "(\\d|[1-9]\\d|1\\d{2,2}|2([0-4]\\d|5[0-5]))"))) {
 
-            var call: Call<IpInfo> = findIpService.queryIp(ip, apiKey)
+            var call: Call<IpInfo> = findIpService.queryIp(ip)
 
             call.enqueue(object : Callback<IpInfo> {
                 override fun onResponse(call: Call<IpInfo>, response: Response<IpInfo>) {
