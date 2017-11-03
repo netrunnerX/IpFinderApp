@@ -40,4 +40,8 @@ class MainActivity : AppCompatActivity(), Presenter.View {
         Toast.makeText(applicationContext, error, Toast.LENGTH_LONG).show()
     }
 
+    override fun onDestroy() {
+        presenter!!.dispose()
+        super.onDestroy()
+    }
 }

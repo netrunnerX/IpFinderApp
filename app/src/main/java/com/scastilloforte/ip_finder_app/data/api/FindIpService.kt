@@ -1,7 +1,7 @@
 package com.scastilloforte.ip_finder_app.data.api
 
 import com.scastilloforte.ip_finder_app.data.model.IpInfo
-import retrofit2.Call
+import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -11,5 +11,5 @@ import retrofit2.http.Query
 interface FindIpService {
 
     @GET(".")
-    fun queryIp(@Query("ip") ip:String): Call<IpInfo>
+    fun queryIp(@Query("ip") ip:String): Observable<IpInfo>
 }
