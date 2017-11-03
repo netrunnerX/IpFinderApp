@@ -1,14 +1,13 @@
 package com.scastilloforte.ip_finder_app.interactor
 
-import com.scastilloforte.ip_finder_app.data.IpDetails
+import com.scastilloforte.ip_finder_app.data.api.FindIpService
+import com.scastilloforte.ip_finder_app.data.model.IpInfo
 import com.scastilloforte.ip_finder_app.presenter.Presenter
-import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.FileNotFoundException
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * Created by netx on 9/20/17.
@@ -16,83 +15,45 @@ import java.net.URL
 class Interactor(var presenter: Presenter) {
 
     val API_KEY = "YOUR_API_KEY_HERE"
+    val BASE_URL = "https://ipfind.co/"
+
+    var findIpService: FindIpService? = null
+
+    init {
+        val retrofit:Retrofit = Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        findIpService = retrofit.create(FindIpService::class.java)
+    }
 
     fun queryIp(ip: String) {
         if (ip.matches(Regex("((\\d|[1-9]\\d|1\\d{2,2}|2([0-4]\\d|5[0-5]))\\.){3}"
                 + "(\\d|[1-9]\\d|1\\d{2,2}|2([0-4]\\d|5[0-5]))"))) {
 
-            val url = "https://ipfind.co?ip=$ip&auth=$API_KEY"
+            var call: Call<IpInfo> = findIpService!!.queryIp(ip, API_KEY)
 
-            MyQueryThread(url).start()
+            call.enqueue(object : Callback<IpInfo> {
+                override fun onResponse(call: Call<IpInfo>, response: Response<IpInfo>) {
+                    if (response.isSuccessful) {
+                        var ipInfo:IpInfo? = response.body()
+
+                        if (ipInfo != null) presenter.showResult(ipInfo)
+
+                    } else {
+                        presenter.showError("Response not successful")
+
+                    }
+                }
+
+                override fun onFailure(call: Call<IpInfo>, t: Throwable) {
+                    presenter.showError(t.message!!)
+                }
+            })
         }
         else {
             presenter.showError("Need a valid IPv4 address")
         }
     }
 
-    inner class MyQueryThread(val url:String): Thread() {
-        override fun run() {
-            var stringResponse : String
-            try {
-                var urlObject = URL(url)
-
-                val urlConnection = urlObject.openConnection() as HttpURLConnection
-
-                urlConnection.connectTimeout = 6999
-
-                stringResponse = fromStreamToString(urlConnection.inputStream)
-            }
-            catch (e : FileNotFoundException) {
-                stringResponse = "URL Error: Check that the IP and the api key are valid"
-            }
-            catch (e : Exception) {
-                stringResponse = "Error: ${e.message}"
-            }
-
-            if (stringResponse!!.contains("Error")) {
-                presenter.showError(stringResponse)
-            }
-            else {
-                var json = JSONObject(stringResponse)
-                val ip = json.getString("ip_address")
-                val country = json.getString("country")
-                val city = json.getString("city")
-                val region = json.getString("region")
-                val timezone = json.getString("timezone")
-                val latitude = json.getDouble("latitude")
-                val longitude = json.getDouble("longitude")
-                val currency = json.getString("currency")
-
-                val ipDetails =
-                        IpDetails(ip, country, city, region, timezone, latitude, longitude, currency)
-
-                presenter.showResult(ipDetails)
-            }
-        }
-    }
-
-    fun fromStreamToString(inputStream : InputStream) : String {
-        val bufferedReader = BufferedReader(InputStreamReader(inputStream))
-
-        var line:String? = null
-        var fullString:String = ""
-
-        try {
-            do {
-                if (bufferedReader != null) {
-                    line = bufferedReader?.readLine()
-
-                    if (line != null)
-                        fullString += line
-                }
-            } while (line != null)
-
-            inputStream.close()
-        }
-        catch (e:Exception) {
-            fullString = "Error: ${e.message}"
-        }
-
-        return fullString
-    }
 }

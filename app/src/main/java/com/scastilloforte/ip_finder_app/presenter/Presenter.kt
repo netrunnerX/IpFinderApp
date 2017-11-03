@@ -1,6 +1,6 @@
 package com.scastilloforte.ip_finder_app.presenter
 
-import com.scastilloforte.ip_finder_app.data.IpDetails
+import com.scastilloforte.ip_finder_app.data.model.IpInfo
 import com.scastilloforte.ip_finder_app.interactor.Interactor
 
 /**
@@ -14,7 +14,7 @@ class Presenter(var view:View?) {
         interactor.queryIp(ip)
     }
 
-    fun showResult(result: IpDetails) {
+    fun showResult(result: IpInfo) {
         if (view != null)
             view!!.showResult(result)
     }
@@ -25,7 +25,7 @@ class Presenter(var view:View?) {
     }
 
     interface View {
-        fun showResult(result:IpDetails)
+        fun showResult(result:IpInfo)
         fun showError(error:String)
     }
 }

@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.scastilloforte.ip_finder_app.R
-import com.scastilloforte.ip_finder_app.data.IpDetails
+import com.scastilloforte.ip_finder_app.data.model.IpInfo
 import com.scastilloforte.ip_finder_app.presenter.Presenter
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), Presenter.View {
         presenter!!.queryIp(etIp.text.toString())
     }
 
-    override fun showResult(result: IpDetails) {
+    override fun showResult(result: IpInfo) {
         val bundle = Bundle()
         bundle.putSerializable("ipDetails", result)
 
