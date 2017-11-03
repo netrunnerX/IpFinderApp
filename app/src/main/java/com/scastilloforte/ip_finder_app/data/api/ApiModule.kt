@@ -14,14 +14,11 @@ class ApiModule {
 
     companion object {
 
-        val BASE_URL = "https://ipfind.co/"
-        val API_KEY = "YOUR_API_KEY_HERE"
-
         var findIpService:FindIpService = getRetrofitInstance().create(FindIpService::class.java)
 
         private fun getRetrofitInstance():Retrofit {
             return Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(createOkHttpClient())
                     .build()
@@ -35,7 +32,7 @@ class ApiModule {
                 val originalHttpUrl = originalRequest.url()
 
                 val url = originalHttpUrl.newBuilder()
-                        .addQueryParameter("auth", API_KEY)
+                        .addQueryParameter("auth", Constants.API_KEY)
                         .build()
 
                 //Add request headers
