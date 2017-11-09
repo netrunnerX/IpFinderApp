@@ -12,7 +12,7 @@ import io.reactivex.schedulers.Schedulers
  */
 class Presenter(var view:View?) {
 
-    var interactor:Interactor = Interactor(this, ApiModule.findIpService)
+    var interactor:Interactor = Interactor(ApiModule.findIpService)
     val compositeDisposable:CompositeDisposable = CompositeDisposable()
 
     fun queryIp(ip: String) {

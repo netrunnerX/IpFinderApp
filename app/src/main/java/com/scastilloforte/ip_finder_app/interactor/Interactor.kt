@@ -8,7 +8,7 @@ import io.reactivex.Observable
 /**
  * Created by netx on 9/20/17.
  */
-class Interactor(var presenter: Presenter, var findIpService: FindIpService) {
+class Interactor(var findIpService: FindIpService) {
 
     @Throws(IllegalArgumentException::class)
     fun queryIp(ip: String): Observable<IpInfo> {
